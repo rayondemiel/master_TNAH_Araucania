@@ -1,0 +1,283 @@
+% document vide aux normes de l'école pour le mémoire
+
+% PREAMBULE
+
+%package obligatoire : type de document
+\documentclass[a4paper,12pt,twoside]{book}
+
+% encodage
+\usepackage{fontspec}
+
+% le package hyperref avec des options, si en local
+%\usepackage[pdfusetitle, pdfsubject ={Mémoire TNAH}, pdfkeywords={les mots-clés}]{hyperref}
+
+%avec overleaf, utiliser :
+\usepackage[xetex]{hyperref}
+\hypersetup{
+pdfauthor = {Maxime Humeau},
+pdftitle = {Ocupación de la Araucanía : Mise en place d'une chaîne de traitement de la transcription à l'édition numérique d'archives manuscrites espagnols du XIXe siècle},
+pdfsubject = {Édition numérique \(XML-ALTO vers XML-TEI\) des archives manuscrites}
+pdfkeywords = {Humanités numériques} {Histoire} {Chili} {Araucania} {Archives politiques et militaires} {Histoire contemporaine} {XIXe siècle} {Data engineering} {XML-TEI} {HTR} {NLP} {Name entity recognition} {Machine Learning} {Edition numérique} {Universidad de Chile} {Histoire coloniale} {Mapuches}
+}
+
+%il faut mettre au moins une langue
+\usepackage[english,french]{babel}
+
+% configurer le document selon les normes de l'école
+\usepackage[margin=2.5cm]{geometry} %marges
+\usepackage{setspace} % espacement qui permet ensuite de définir un interligne
+\onehalfspacing % interligne de 1.5
+\setlength\parindent{1cm} % indentation des paragraphes à 1 cm
+
+
+
+
+%%%%%%%%%%% PACKAGE %%%%%%%%%%% 
+\usepackage{lettrine} % lettrines (pas obligatoire)
+\usepackage{epigraph} % package to use epigraph in chapter
+\usepackage{csquotes}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{adjustbox}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{ulem}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+
+\usepackage{setspace}
+\usepackage{etoolbox}
+\AtBeginEnvironment{quote}{\par\singlespacing\small}
+
+% bibliographie maxbibnames=10
+\usepackage[backend=biber, sorting=nyt, style=enc]{biblatex}
+\addbibresource{biblio/histoire_historiographie.bib}
+\addbibresource{biblio/humanites_numeriques.bib}
+\addbibresource{biblio/machine_learning.bib}
+\addbibresource{biblio/codes.bib}
+\addbibresource{biblio/web_semantic.bib}
+\addbibresource{biblio/chili.bib}
+\addbibresource{biblio/htr.bib}
+\addbibresource{biblio/ner.bib}
+\addbibresource{biblio/nlp.bib}
+\addbibresource{biblio/edition_numerique.bib}
+\nocite{*}
+
+
+
+% Command
+\newcommand{\newpar}{\newline\par}
+\newcommand{\balise}[1]{\textbf{<#1>}}
+\newcommand{\attribut}[1]{\textbf{\textit{@#1}}}
+\renewcommand\lstlistingname{Code}
+\renewcommand\listoflistingscaption{Liste des codes sources}
+\setminted{breaklines}
+
+%glossaire general
+\usepackage[automake,acronym,toc]{glossaries}
+\makeglossaries
+
+%acronyme
+\newacronym{enc}{ÉNC}{École nationale des chartes}
+\newacronym{DTD}{DTD}{Document type definition}
+\newacronym{json}{JSON}{JavaScript Object Notation}
+\newacronym{acab}{ACAB}{Archivo Central Andres Bello}
+\newacronym{jpg}{JPG}{Joint Photographic Group}
+\newacronym{ocr}{OCR}{Optical Character Recognition}
+\newacronym{htr}{HTR}{Handwritten Text Recognition}
+\newacronym{CMS}{CMS}{Content Managing System}
+\newacronym{ia}{IA}{Intelligence Artificielle}
+\newacronym{rem}{REM}{Reconnaissance d’Écriture Manuscrite}
+\newacronym{ODD}{ODD}{One Document Does}
+\newacronym{RNG}{RNG}{Regular Language for XML Next Generation}
+\newacronym{cli}{CLI}{Interface en Ligne de Commande}
+\newacronym{gpu}{GPU}{Graphics Processing Unit}
+\newacronym{tiff}{TIFF}{Tagged Image File Format}
+\newacronym{RNN}{RNN}{Recurrent Neural Networks}
+\newacronym{CNN}{CNN}{Convolutional Neural Networks}
+\newacronym{dahn}{DAHN}{Dispositif de soutien à l’Archivistique et aux Humanités Numériques}
+\newacronym{inria}{INRIA}{Institut national de recherche en sciences et technologies du numérique}
+\newacronym{segmonto}{SegmOnto}{A Controlled Vocabulary to Describe the Layout of Pages}
+\newacronym{xml}{XML}{eXtensible Markup Language}
+\newacronym{w3c}{W3C}{World Wide Web Consortium}
+\newacronym{lectaurep}{LECTAUREP}{LECTure Automatique de REPertoire}
+\newacronym{page}{PAGE}{Page Analysis and Ground truth Elements}
+\newacronym{tal}{TAL}{Traitement Automatique des Langues}
+\newacronym{regex}{REGEX}{Expression régulière}
+\newacronym{ephe}{EPHE}{École Pratique des Hautes Études - Université PSL}
+\newacronym{DIS}{DIS}{Délétion Insertion Substitution}
+\newacronym{ren}{REN}{Reconnaissance des entités nommées}
+\newacronym{uri}{URI}{Uniform Resource Identifier}
+
+
+%glossaire
+\newglossaryentry{lod}{name=Linked Open Data,description={Les données liées sont une méthode de publication de données structurées, de sorte qu’elles puissent être interconnectées et deviennent plus utiles au moyen de requêtes sémantiques. Il s’appuie sur des technologies web standard telles que HTTP, RDF et URI, mais plutôt que de les utiliser pour desservir des pages web pour les lecteurs humains, elle les étend au partage d’informations de manière à pouvoir être lues automatiquement par des ordinateurs}}
+\newglossaryentry{csv}{name=CSV,description={\textit{Comma-separated value} -- format texte ouvert représentant des données tabulaires sous forme de valeurs déterminées par un séparateur, en général une virgule, point-virgule ou une tabulation}}
+\newglossaryentry{kraken}{name=Kraken, description={Système d'HTR clé en main, optimisé pour les documents historiques et les textes en caractères non latins.}}
+\newglossaryentry{eScriptorium}{name=eScriptorium, description={Application web \textit{open source} dédiée à la transcription automatique des documents, utilisant le moteur HTR \gls{kraken}}}
+\newglossaryentry{alto}{name=ALTO, description={\textit{Analysed Layout and Text Object} -- Standard XML permettant de rendre compte de la mise en page physique et de la structure logique d'un texte transcrit par reconnaissance optique de caractères}}
+\newglossaryentry{tei}{name=TEI, description={\textit{Text Encoding Initiative} -- Standard XMl qui met l'accent sur le contenu et le sens informationnel des documents. A travers ce format, on parle souvent }}
+\newglossaryentry{github}{name=GitHub, description={Plateforme web propriétaire s'appuyant sur le  logiciel de gestion de versions Git, tout en permettant l'hébergement de code source pour des logiciels et autres applications.}}
+\newglossaryentry{git}{name=Git, description={Logiciel libre et gratuit de gestion de versions décentralisé}}
+\newglossaryentry{CER}{name=CER, description={\textit{Character Error Rate} (en français\, Taux d’erreur de caractères)\, métrique évaluant le taux de d'erreurs (\gls{DIS}) entre la prédiction d'un modèle et la donnée terrain en fonction du nombres de caractères. Le taux est déterminé par la formule suivante : $$ CER = \frac{S\, + \,D\, + \,I\,}{N_{total\, de\, caracteres}} $$}}
+\newglossaryentry{WER}{name=WER, description={\textit{Word Error Rate} (Taux d'erreur de mots en français\, métrique évaluant le taux le mots possédant une erreur de caractères (\gls{DIS}) entre la prédiction d'un modèle et la donnée terrain. Le taux est déterminé par la formule suivante : $$ WER = \frac{S_{w}\, + \,D_{w}\, + \,I_{w}\,}{N_{w}} $$}}
+\newglossaryentry{ACC}{name=Précision, description={(\textit{Accuracy} en anglais), métrique évaluant la performance d'un modèle de \textit{machine learning} selon la matrice de confusion en calculant le pourcentage de prédictions valides. Le taux est déterminé par la formule suivante : $$ Acc = \frac{TP+TN}{TP+TN+FP+FN} $$}}
+\newglossaryentry{API}{name=API, description={\textit{Application Programming Interface} (Interface de programmation d'application, en français) -- C'est une interface logicielle qui permet de « connecter » un logiciel ou un service à un autre logiciel ou service afin d’échanger des données et des fonctionnalités. (\copyright CNIL)}}
+\newglossaryentry{rappel}{name=Rappel, description={(\textit{Recall} en anglais) -- Au sein de la matrice de confusion, il permet d'évalue le nombre de vrai positif sur l'ensemble des éléments évalués positifs par le modèle. Le taux est déterminé par la formule suivante : $$ R = \frac{TP}{TP+FN} $$}}
+\newglossaryentry{f1}{name=F1-score, description={(ou F-score) -- Au sein de la matrice de confusion, il correspond à la moyenne harmonique de la précision et du rappel dont le score maximum possible est de 1. Le taux est déterminé par la formule suivante : $$ F = 2 \times \frac{Precision \times Recall}{Precision + Recall} $$ }}
+\newglossaryentry{spacy}{name=SpaCy, description={Librairie Python de traitement automatique des langues développée par Matt Honnibal et Ines Montani. SpaCy est un logiciel libre publié sous licence MIT. (\copyright Wikipedia)}}
+\newglossaryentry{rdf}{name=RDF, description={Resource Description Framework --  Syntaxe pour représenter des données sur le Web de
+manière générale, et proposer un schéma de description des ressources à partir des modèles graphes.}}
+
+
+
+
+%si index, package pour index + makeindex
+
+% + toutes la liste des packages nécessaires à votre document (si images, tableaux, schémas, etc.)
+
+% on pourra aussi utiliser la commande mise dans l'exemple de correction du TP1 pour enlever les titres courant qui traînent sur les pages
+
+\author{Maxime Humeau - M2 TNAH}
+\title{Ocupación de la Araucanía : Mise en place d'une chaîne de traitement de la transcription à l'édition numérique d'archives manuscrites espagnols du XIX\textsuperscript{e} siècle}
+
+% DOCUMENT
+\begin{document}
+	\begin{titlepage}
+		\begin{center}
+			
+			\bigskip
+			
+			\begin{large}				
+				ÉCOLE NATIONALE DES CHARTES\\
+				UNIVERSITÉ PARIS, SCIENCES \& LETTRES
+			\end{large}
+			\begin{center}\rule{2cm}{0.02cm}\end{center}
+			
+			\bigskip
+			\bigskip
+			\bigskip
+			\begin{Large}
+				\textbf{Maxime HUMEAU}\\
+			\end{Large}
+		%selon le cas
+			\begin{normalsize} \textit{licencié ès lettres}\\
+				\textit{master ès lettres}
+			\end{normalsize}
+			
+			\bigskip
+			\bigskip
+			\bigskip
+			
+			\begin{Huge}
+				\textbf{Ocupación de la Araucanía}\\
+			\end{Huge}
+			\bigskip
+			\bigskip
+			\begin{LARGE}
+				\textbf{Mise en place d'une chaîne de traitement de la transcription à l'édition numérique d'archives manuscrites espagnoles du XIX\textsuperscript{e} siècle}\\
+			\end{LARGE}
+			
+			\bigskip
+			\bigskip
+			\bigskip
+			\begin{large}
+			\end{large}
+			\vfill
+			
+			\begin{large}
+				Mémoire 
+				pour le diplôme de master \\
+				\og{} Technologies numériques appliquées à l'histoire \fg{} \\
+				\bigskip
+				2022
+			\end{large}
+			
+		\end{center}
+	\end{titlepage}
+	
+	\thispagestyle{empty}	
+	\cleardoublepage
+	
+	\frontmatter
+	\chapter{Résumé}
+	\medskip
+	Ce présent mémoire rend compte du stage effectué entre avril et juillet 2022 au centre \textit{Archivo Central Andrés Bello - Universidad de Chile} à Santiago du Chili pour le traitement éditorial des sources autour de l'\enquote{Occupation de l'Araucanie} (1850-1881). Il a conduit à la conception d'une chaîne de traitement de documents numérisés vers l'encodage TEI p5, décrit par une documentation ODD. Pour se faire, un modèle HTR a été produit afin de reproduire le contenu et la mise en page des documents numérisés \textit{via} le moteur OCR Kraken.
+	
+	Dans un second temps, le stage a donné lieu au développement d'un modèle de reconnaissance d'entités nommées sur la base du modèle BETO. Cette utilisation des techniques du traitement automatique du langage a eu pour effet de permettre l'indexation des personnes, lieux, organisations et dates présentes au sein des fichiers XML-TEI. Enfin, ces entités ont fait le fruit d'un processus d'enrichissement automatique à partir des bases de données Wikidata.
+	\\
+	
+	\textbf{Mots-clés~:} Humanités numériques; Histoire; Chili; Araucania; Archives politiques et militaires; Histoire contemporaine; XIXe siècle; Data engineering; XML-TEI; HTR; Kraken; Traitement automatique du langage; Reconnaissance des entités nommées; Apprentissage automatique; Édition numérique; Universidad de Chile; Histoire coloniale; Mapuches; Web sémantique.
+	
+	\textbf{Informations bibliographiques~:} Maxime Humeau, \textit{\enquote{Ocupación de la Araucanía}. Mise en place d'une chaîne de traitement de la transcription à l'édition numérique d'archives manuscrites espagnoles du XIX\textsuperscript{e} siècle}, mémoire de master \og{}Technologies numériques appliquées à l'histoire\fg{}, dir. Thibault Clérice et Ariane Pinche, École nationale des chartes, 2022.
+	
+	\chapter{Remerciements}
+	
+	\lettrine{M}es souhaits vont tout d’abord à mon tuteur de stage M. Alessandro Chiaretti et l'ensemble de l'équipe du centre Archivo Central Andrés Bello pour l'ensemble de leurs aides, leurs accompagnements et leur accueil extrêmement chaleureux et bienveillant. Découvrir ce pays et sa culture à leurs côtés fut d'un très grand plaisir.
+	
+	Je tiens à remercier Thibault Clérice et Ariane Pinche, mes directeurs de mémoire, pour leurs suivies, leurs recommandations précieuses tout au long de stage. Ces remerciements s'étendent à l'ensemble de leur travail sur cette année pour une volonté sans faille pour transmettre leurs savoirs-faires et leurs soutiens infaillibles envers l'ensemble de la promotion.
+	
+	Je remercie l'ensemble de l'équipe pédagogique du master TNAH et le personnel de l'École nationale des Chartes sans qui cette formation ne pourrait aboutir. Cette année fut celle d'un très grand enrichissement et signé d'une très grande curiosité intellectuelle et technique.
+	
+	Je tiens à remercier l'ensemble de la promotion pour le partage de cette année sous le sigle d'une aventure numérique, historique et de colonnades.
+	
+	Je remercie spécialement Antoine Lauer, Laura Catrou, Grégoire Hör et Léo Ludivic pour leurs aides et leurs relectures précieuses.
+	
+	Je souhaite remercier l'ensemble des personnes qui ont su m'accueillir avec une extrême générosité tout au long de ce périple à l'autre bout du monde, et plus particulièrement à toi Josefa sans qui rien ne serais possible.
+	
+	Enfin, je remercie ma famille et mes proches pour leurs soutiens et leurs encouragements indéfectibles sur l'ensemble de mon histoire universitaire. 
+	
+	%bibliographie ici
+	\chapter{Bibliographie}
+	
+	\printbibliography[heading=subbibintoc,keyword=chili,title=Études sociopolitiques autour du Chili]
+	\printbibliography[heading=subbibintoc,keyword=histoire,title=Histoire et historiographie des relations Chileno-Mapuche]
+	\printbibliography[heading=subbibintoc,keyword=humanites,title=Humanités numériques et science ouverte]
+	\printbibliography[heading=subbibintoc,keyword=edition,title=Éditions numériques]
+	\printbibliography[heading=subbibintoc,keyword=machinel,title=Généralités autour de l'apprentissage Machine]
+	\printbibliography[heading=subbibintoc,keyword=htr,title=Reconnaissance d'écriture manuscrite]
+	\printbibliography[heading=subbibintoc,keyword=nlp,title=Traitement automatique du langage]
+	\printbibliography[heading=subbibintoc,keyword=ner,title=Reconnaissance d'entités nommées]
+	\printbibliography[heading=subbibintoc,keyword=semantic,title=Le web sémantique]
+	\printbibliography[heading=subbibintoc,keyword=codes,title=Codes et scripts produits durant le stage]
+	
+	%introduction
+	
+	\input{introduction.tex}
+	
+	\thispagestyle{empty}
+	\cleardoublepage
+	
+	\mainmatter
+	
+	\input{part1}
+	
+	\input{part2}
+	
+	%conclusion
+	\input{conclusion}
+	
+	%glossaire si glossaire
+	\glsaddall
+    \printglossary[type=\acronymtype, nonumberlist]
+    \printglossary[nonumberlist]
+	%\printglossaries
+	
+	%les annexes
+	\input{appendix}
+	
+	\backmatter
+
+% figures & tables
+	\listoffigures
+	\listoftables
+	\listoflistings
+
+% table des matières
+	\tableofcontents
+	
+\end{document}
